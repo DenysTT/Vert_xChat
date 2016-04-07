@@ -5,10 +5,7 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.ext.web.handler.sockjs.BridgeEvent;
-import io.vertx.ext.web.handler.sockjs.BridgeOptions;
-import io.vertx.ext.web.handler.sockjs.PermittedOptions;
-import io.vertx.ext.web.handler.sockjs.SockJSHandler;
+import io.vertx.ext.web.handler.sockjs.*;
 
 import java.io.IOException;
 import java.net.BindException;
@@ -43,7 +40,6 @@ public class Server extends AbstractVerticle {
         if (hostPort<0) return false;
 
         Router router = Router.router(vertx);
-
         handler = SockJSHandler.create(vertx);
 
         router.route("/eventbus").handler(handler);
@@ -99,13 +95,13 @@ public class Server extends AbstractVerticle {
                 .addOutboundPermitted(new PermittedOptions().setAddress("chat.to.client"));
 
         handler.bridge(opts, event ->{
-            if(event.type() == BridgeEvent.Type.PUBLISH)
+            if(event.type() == BridgeEventType.PUBLISH)
                 publishEvent(event);
 
-            if(event.type() == BridgeEvent.Type.REGISTER)
+            if(event.type() == BridgeEventType.REGISTER)
                 registerEvent(event);
 
-            if(event.type() == BridgeEvent.Type.SOCKET_CLOSED)
+            if(event.type() == BridgeEventType.SOCKET_CLOSED)
                 closeEvent(event);
 
             event.complete();
@@ -113,8 +109,8 @@ public class Server extends AbstractVerticle {
     }
 
     private boolean publishEvent(BridgeEvent event){
-        if(event.rawMessage() != null && event.rawMessage().getString("address").equals("chat.to.server")){
-            String message = event.rawMessage().getString("body");
+        if(event.getRawMessage() != null && event.getRawMessage().getString("address").equals("chat.to.server")){
+            String message = event.getRawMessage().getString("body");
             if(!verifyMessage(message))
                 return false;
 
@@ -142,7 +138,7 @@ public class Server extends AbstractVerticle {
     }
 
     private void registerEvent(BridgeEvent event){
-        if(event.rawMessage() !=null && event.rawMessage().getString("address").equals("chat.to.client"))
+        if(event.getRawMessage() !=null && event.getRawMessage().getString("address").equals("chat.to.client"))
             new Thread(() ->
             {Map<String, Object> registerNotice = createRegisterNotice();
                 vertx.eventBus().publish("chat.to.client",new Gson().toJson(registerNotice));
