@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.impl.launcher.*;
 import io.vertx.core.Starter;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -64,11 +65,11 @@ public class Server extends AbstractVerticle {
     private int getFreePort(){
         int hostPort = 8080;
 
-        if(Starter.PROCESS_ARGS != null && Starter.PROCESS_ARGS.size() > 0){
+        if(VertxCommandLauncher.getProcessArguments() != null && VertxCommandLauncher.getProcessArguments().size() > 0){
             try{
-                hostPort = Integer.valueOf(Starter.PROCESS_ARGS.get(0));
+                hostPort = Integer.valueOf(VertxCommandLauncher.getProcessArguments().get(0));
             }catch (NumberFormatException e ){
-                logger.warn("Invalid port: " + Starter.PROCESS_ARGS.get(0));
+                logger.warn("Invalid port: " + VertxCommandLauncher.getProcessArguments().get(0));
             }
         }
         if (hostPort < 0 || hostPort > 65535){
