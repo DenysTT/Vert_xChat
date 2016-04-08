@@ -14,23 +14,23 @@
 
     <style type="text/css">
         body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
         }
 
         .received{
-        width: 160px;
-        font-size: 10px;
+            width: 160px;
+            font-size: 10px;
         }
 
         input[type=text]:focus, textarea:focus{
-        box-shadow: 0 0 5px #4cae4c;
-        border: 1px solid #4cae4c;
+            box-shadow: 0 0 5px #4cae4c;
+            border: 1px solid #4cae4c;
         }
 
         .tab-content{
-        padding:5px
+            padding:5px
         }
     </style>
 
@@ -103,48 +103,48 @@
     </script>
 </head>
 <body>
-<div class="container chat-wrapper">
-    <form id="chatForm">
-        <h2 align="center" class="alert alert-success">CHAT ROOM</h2>
-        <fieldset>
-            <div class="input-group input-group-lg">
+    <div class="container chat-wrapper">
+        <form id="chatForm">
+            <h2 align="center" class="alert alert-success">CHAT ROOM</h2>
+            <fieldset>
+                <div class="input-group input-group-lg">
                     <span class="input-group-addon" id="onlineIco">
                         <span class="glyphicon glyphicon-eye-open"></span>
                     </span>
                     <span class="input-group-addon" id="online">
                         <span class="glyphicon glyphicon-option-horizontal"></span>
                     </span>
-                <input type="text" maxlength="141" autocomplete="off" class="form-control"
-                       placeholder="What's new?" id="message" aria-describedby="sizing-addon1"
-                       onkeyup="countChar()"/>
+                    <input type="text" maxlength="141" autocomplete="off" class="form-control"
+                        placeholder="What's new?" id="message" aria-describedby="sizing-addon1"
+                        onkeyup="countChar()"/>
                     <span class="input-group-btn">
                         <button class="btn btn-success" type="submit">
                             <span class="glyphicon glyphicon-send"></span>
                         </button>
                     </span>
+                </div>
+            </fieldset>
+
+            <h3 id="charNum">140</h3>
+
+            <div class="progress">
+                <div id="charNumProgressBar" class="progress-bar progress-bar-success active" role="progressbar"
+                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    <span class="sr-only">100% Complete</span>
+                </div>
             </div>
-        </fieldset>
 
-        <h3 id="charNum">140</h3>
-
-        <div class="progress">
-            <div id="charNumProgressBar" class="progress-bar progress-bar-success active" role="progressbar"
-                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                <span class="sr-only">100% Complete</span>
+            <div class="panel panel-success">
+                <div class="panel-heading"><h3>New messages</h3></div>
+                    <table id="messages" class="table table-hover" width="100%">
+                        <colgroup>
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                        </colgroup>
+                    </table>
             </div>
-        </div>
-
-        <div class="panel panel-success">
-            <div class="panel-heading"><h3>New messages</h3></div>
-            <table id="messages" class="table table-hover" width="100%">
-                <colgroup>
-                    <col style="width:10%">
-                    <col style="width:10%">
-                    <col style="width:10%">
-                </colgroup>
-            </table>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 </body>
 </html>

@@ -5,7 +5,10 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.ext.web.handler.sockjs.*;
+import io.vertx.ext.web.handler.sockjs.BridgeEvent;
+import io.vertx.ext.web.handler.sockjs.BridgeOptions;
+import io.vertx.ext.web.handler.sockjs.PermittedOptions;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 
 import java.io.IOException;
 import java.net.BindException;
@@ -14,6 +17,7 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import static io.vertx.ext.web.handler.sockjs.BridgeEventType.*;
 
 
 /**
@@ -42,7 +46,7 @@ public class Server extends AbstractVerticle {
         Router router = Router.router(vertx);
         handler = SockJSHandler.create(vertx);
 
-        router.route("/eventbus").handler(handler);
+        router.route("/eventbus/*").handler(handler);
         router.route().handler(StaticHandler.create());
 
         vertx.createHttpServer().requestHandler(router::accept).listen(hostPort);
@@ -95,16 +99,16 @@ public class Server extends AbstractVerticle {
                 .addOutboundPermitted(new PermittedOptions().setAddress("chat.to.client"));
 
         handler.bridge(opts, event ->{
-            if(event.type() == BridgeEventType.PUBLISH)
+            if(event.type() == PUBLISH)
                 publishEvent(event);
 
-            if(event.type() == BridgeEventType.REGISTER)
+            if(event.type() == REGISTER)
                 registerEvent(event);
 
-            if(event.type() == BridgeEventType.SOCKET_CLOSED)
+            if(event.type() == SOCKET_CLOSED)
                 closeEvent(event);
 
-            event.complete();
+            event.complete(true);
         });
     }
 
