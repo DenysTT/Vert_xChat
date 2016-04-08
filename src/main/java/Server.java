@@ -69,7 +69,7 @@ public class Server extends AbstractVerticle {
             try{
                 hostPort = Integer.valueOf(VertxCommandLauncher.getProcessArguments().get(0));
             }catch (NumberFormatException e ){
-                logger.warn("Invalid port : " + VertxCommandLauncher.getProcessArguments().get(0));
+                logger.warn("Invalid port: " + VertxCommandLauncher.getProcessArguments().get(0));
             }
         }
         if (hostPort < 0 || hostPort > 65535){
